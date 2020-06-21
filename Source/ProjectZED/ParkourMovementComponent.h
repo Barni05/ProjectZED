@@ -16,13 +16,25 @@ public:
 	// Sets default values for this component's properties
 	UParkourMovementComponent();
 
+	// Called every frame
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	float DashCooldown = 5;
+
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	bool bCanDash = true;
+
+	UPROPERTY()
+	class UCharacterMovementComponent* CharacterMovementComponent;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+private:
+	void Dash();
+
 
 		
 };

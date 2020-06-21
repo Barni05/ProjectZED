@@ -3,6 +3,11 @@
 
 
 #include "ParkourMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/Character.h"
+#include "Camera/CameraComponent.h"
+#include "Engine/World.h"
 
 // Sets default values for this component's properties
 UParkourMovementComponent::UParkourMovementComponent()
@@ -19,8 +24,8 @@ UParkourMovementComponent::UParkourMovementComponent()
 void UParkourMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
+	CharacterMovementComponent = GetOwner()->FindComponentByClass<UCharacterMovementComponent>();
+	GetOwner()->InputComponent->BindAction(FName("Dash"), IE_Pressed, this, &UParkourMovementComponent::Dash);
 	
 }
 
@@ -33,3 +38,20 @@ void UParkourMovementComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 	// ...
 }
 
+void UParkourMovementComponent::Dash()
+{
+	if (bCanDash == false) { return; }
+	bCanDash = false;
+	auto PlayerCharacter = Cast<ACharacter>(GetOwner());
+	auto Camera = GetOwner()->FindComponentByClass<UCameraComponent>();
+	if (!Camera) { return; }
+	FVector LaunchVelocity = (Camera->GetForwardVector()) * 8000;
+	LaunchVelocity.Z = 0;
+	PlayerCharacter->LaunchCharacter(LaunchVelocity, true, true);
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, 5, false, 0.f);
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY"))
+	bCanDash = true;
+	if (!CharacterMovementComponent){return;}
+	CharacterMovementComponent->StopMovementImmediately();
+}
