@@ -19,21 +19,31 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	void SetCanDash();
+
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	float DashCooldown = 5;
 
+	UPROPERTY(VisibleAnywhere, Category = "Gameplay")
+	float DashCooldownRemaining;
+
+	FTimerHandle DashTimerHandle;
+
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	bool bCanDash = true;
 
-	UPROPERTY()
-	class UCharacterMovementComponent* CharacterMovementComponent;
+	ACharacter* PlayerCharacter;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 private:
 	void Dash();
+
+	UFUNCTION()
+	void StopDashing(FVector LaunchVelocity);
 
 
 		

@@ -7,6 +7,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "TimerManager.h"
 #include "Engine/World.h"
 
 // Sets default values for this component's properties
@@ -24,9 +26,8 @@ UParkourMovementComponent::UParkourMovementComponent()
 void UParkourMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	CharacterMovementComponent = GetOwner()->FindComponentByClass<UCharacterMovementComponent>();
 	GetOwner()->InputComponent->BindAction(FName("Dash"), IE_Pressed, this, &UParkourMovementComponent::Dash);
-	
+	PlayerCharacter = Cast<ACharacter>(GetOwner());
 }
 
 
@@ -35,23 +36,32 @@ void UParkourMovementComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	DashCooldownRemaining = GetWorld()->GetTimerManager().GetTimerRemaining(DashTimerHandle);
 }
 
 void UParkourMovementComponent::Dash()
 {
 	if (bCanDash == false) { return; }
 	bCanDash = false;
-	auto PlayerCharacter = Cast<ACharacter>(GetOwner());
 	auto Camera = GetOwner()->FindComponentByClass<UCameraComponent>();
 	if (!Camera) { return; }
-	FVector LaunchVelocity = (Camera->GetForwardVector()) * 8000;
+	FVector LaunchVelocity = (Camera->GetForwardVector()) * 20000;
 	LaunchVelocity.Z = 0;
 	PlayerCharacter->LaunchCharacter(LaunchVelocity, true, true);
-	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, 5, false, 0.f);
-	UE_LOG(LogTemp, Warning, TEXT("DONKEY"))
-	bCanDash = true;
-	if (!CharacterMovementComponent){return;}
-	CharacterMovementComponent->StopMovementImmediately();
+	FTimerHandle DashStopHandle;
+	FTimerDelegate DashStopDelegate;
+	DashStopDelegate.BindUFunction(this, FName("StopDashing"), LaunchVelocity);
+	GetWorld()->GetTimerManager().SetTimer(DashStopHandle, DashStopDelegate, 0.1, false);
+	GetWorld()->GetTimerManager().SetTimer(DashTimerHandle, this, &UParkourMovementComponent::SetCanDash, DashCooldown, false);
+}
+
+void UParkourMovementComponent::SetCanDash()
+{
+	this->bCanDash = true;
+}
+
+void UParkourMovementComponent::StopDashing(FVector LaunchVelocity)
+{
+	//PlayerCharacter->LaunchCharacter((LaunchVelocity * -1)/2, true, true);
+	PlayerCharacter->GetMovementComponent()->StopMovementImmediately();
 }
