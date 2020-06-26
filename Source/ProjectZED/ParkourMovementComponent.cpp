@@ -35,8 +35,6 @@ void UParkourMovementComponent::BeginPlay()
 void UParkourMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	DashCooldownRemaining = GetWorld()->GetTimerManager().GetTimerRemaining(DashTimerHandle);
 }
 
 void UParkourMovementComponent::Dash()
@@ -52,12 +50,17 @@ void UParkourMovementComponent::Dash()
 	FTimerDelegate DashStopDelegate;
 	DashStopDelegate.BindUFunction(this, FName("StopDashing"), LaunchVelocity);
 	GetWorld()->GetTimerManager().SetTimer(DashStopHandle, DashStopDelegate, 0.1, false);
-	GetWorld()->GetTimerManager().SetTimer(DashTimerHandle, this, &UParkourMovementComponent::SetCanDash, DashCooldown, false);
+	GetWorld()->GetTimerManager().SetTimer(DashTimerHandle, this, &UParkourMovementComponent::EnableCanDash, DashCooldown, false);
 }
 
-void UParkourMovementComponent::SetCanDash()
+void UParkourMovementComponent::EnableCanDash()
 {
 	this->bCanDash = true;
+}
+
+FTimerHandle UParkourMovementComponent::GetDashTimerHandle() const
+{
+	return DashTimerHandle;
 }
 
 void UParkourMovementComponent::StopDashing(FVector LaunchVelocity)

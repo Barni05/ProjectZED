@@ -19,16 +19,15 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void SetCanDash();
+	void EnableCanDash();
+
+	UFUNCTION(BlueprintCallable, Category = "Timers")
+	FTimerHandle GetDashTimerHandle() const;
 
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	float DashCooldown = 5;
 
-	UPROPERTY(VisibleAnywhere, Category = "Gameplay")
-	float DashCooldownRemaining;
-
-	FTimerHandle DashTimerHandle;
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	bool bCanDash = true;
@@ -40,6 +39,8 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	FTimerHandle DashTimerHandle;
+
 	void Dash();
 
 	UFUNCTION()
