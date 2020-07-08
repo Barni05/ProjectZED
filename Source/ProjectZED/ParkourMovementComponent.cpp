@@ -65,6 +65,5 @@ FTimerHandle UParkourMovementComponent::GetDashTimerHandle() const
 
 void UParkourMovementComponent::StopDashing(FVector LaunchVelocity)
 {
-	//PlayerCharacter->LaunchCharacter((LaunchVelocity * -1)/2, true, true);
 	PlayerCharacter->GetMovementComponent()->StopMovementImmediately();
 }
