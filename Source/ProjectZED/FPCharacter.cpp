@@ -23,16 +23,18 @@ AFPCharacter::AFPCharacter()
 	Mesh1P = CreateDefaultSubobject<UStaticMeshComponent>(FName("Mesh1P"));
 	Mesh1P->SetupAttachment(FPCamera);
 
-	Gun = CreateDefaultSubobject<UStaticMeshComponent>(FName("Gun"));
-	Gun->SetupAttachment(Mesh1P);
-
 }
 
 // Called when the game starts or when spawned
 void AFPCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	Mesh1P->SetupAttachment(Cast<UPrimitiveComponent>(FPCamera));
+	Gun = GetWorld()->SpawnActor<AActor>(GunBlueprint);
+	Gun->AttachToComponent(FPCamera, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	Gun->SetActorRelativeLocation(FVector(60, 30, -30));
+	Gun->SetActorRelativeRotation(FRotator(0, -90, 0));
+	Gun->SetActorRelativeScale3D(FVector(0.1, 0.1, 0.1));
+
 }
 
 // Called every frame
@@ -49,3 +51,7 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 }
 
+void AFPCharacter::SetGun(TSubclassOf<AActor> GunRef)
+{
+	GunBlueprint = GunRef;
+}

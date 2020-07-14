@@ -15,6 +15,8 @@ public:
 	// Sets default values for this character's properties
 	AFPCharacter();
 
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	void SetGun(TSubclassOf<AActor> GunRef);
 
 protected:
 
@@ -24,8 +26,12 @@ protected:
 	class UCameraComponent* FPCamera;
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	class USpringArmComponent* CameraBoom;
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	UStaticMeshComponent* Gun;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Gun")
+	AActor* Gun;
+
+	UPROPERTY(EditAnywhere, Category = "Gun")
+	TSubclassOf<AActor> GunBlueprint;
 
 
 	// Called when the game starts or when spawned
