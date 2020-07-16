@@ -15,9 +15,11 @@ public:
 	// Sets default values for this character's properties
 	AFPCharacter();
 
-	UFUNCTION(BlueprintCallable, Category = "Firing")
-	void SetGun(TSubclassOf<AActor> GunRef);
+	UPROPERTY(EditAnywhere, Category = "Gun")
+	TSubclassOf<class AGun> GunBlueprint;
 
+	UPROPERTY(EditAnywhere, Category = "Gun")
+	AGun* Gun;
 protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
@@ -26,16 +28,13 @@ protected:
 	class UCameraComponent* FPCamera;
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	class USpringArmComponent* CameraBoom;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Gun")
-	AActor* Gun;
-
-	UPROPERTY(EditAnywhere, Category = "Gun")
-	TSubclassOf<AActor> GunBlueprint;
-
-
+	
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+private:
+	void PlaceGun();
 
 public:	
 	// Called every frame
@@ -44,4 +43,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	void SetGun(TSubclassOf<AActor> GunRef);
+
+	void Fire();
+
+	void OnFire(TSubclassOf<class APistol> PistolBlueprint);
+	void OnFire(TSubclassOf<AGun> GunBP);
 };
