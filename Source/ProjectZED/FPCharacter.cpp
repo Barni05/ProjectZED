@@ -56,13 +56,9 @@ void AFPCharacter::PlaceGun()
 void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAction(FName("Fire"), EInputEvent::IE_Pressed, this, &AFPCharacter::Fire);
+	
 }
 
-void AFPCharacter::Fire()
-{
-	OnFire(GunBlueprint);
-}
 
 void AFPCharacter::OnFire(TSubclassOf<APistol> PistolBlueprint)
 {
@@ -71,10 +67,10 @@ void AFPCharacter::OnFire(TSubclassOf<APistol> PistolBlueprint)
 	Pistol->OnFire();
 }
 
-void AFPCharacter::OnFire(TSubclassOf<AGun> GunBP)
+/*void AFPCharacter::OnFire(TSubclassOf<AGun> GunBP)
 {
 	UE_LOG(LogTemp, Warning, TEXT("DONKEY: ONFire FPCharacter.cpp"))
-}
+}*/
 
 void AFPCharacter::SetGun(TSubclassOf<AActor> GunRef)
 {

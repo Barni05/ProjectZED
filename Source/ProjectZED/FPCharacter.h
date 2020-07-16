@@ -16,10 +16,10 @@ public:
 	AFPCharacter();
 
 	UPROPERTY(EditAnywhere, Category = "Gun")
-	TSubclassOf<class AGun> GunBlueprint;
+	class AGun* Gun;
 
 	UPROPERTY(EditAnywhere, Category = "Gun")
-	AGun* Gun;
+	TSubclassOf<AGun> GunBlueprint;
 protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
@@ -46,8 +46,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Firing")
 	void SetGun(TSubclassOf<AActor> GunRef);
 
-	void Fire();
-
 	void OnFire(TSubclassOf<class APistol> PistolBlueprint);
-	void OnFire(TSubclassOf<AGun> GunBP);
+	//void OnFire(TSubclassOf<AGun> GunBP);
 };

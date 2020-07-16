@@ -14,6 +14,8 @@ APistol::APistol()
 void APistol::BeginPlay()
 {
 	Super::BeginPlay();
+	EnableInput(GetWorld()->GetFirstPlayerController());
+	InputComponent->BindAction(FName("Fire"), IE_Pressed, this, &APistol::OnFire);
 }
 
 void APistol::OnFire()
