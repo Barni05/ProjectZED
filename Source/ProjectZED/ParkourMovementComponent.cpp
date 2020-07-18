@@ -26,7 +26,10 @@ UParkourMovementComponent::UParkourMovementComponent()
 void UParkourMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	GetOwner()->InputComponent->BindAction(FName("Dash"), IE_Pressed, this, &UParkourMovementComponent::Dash);
+	if(GetOwner()->GetInstigatorController()->GetPawn()->IsPlayerControlled())
+	{
+		GetOwner()->InputComponent->BindAction(FName("Dash"), IE_Pressed, this, &UParkourMovementComponent::Dash);
+	}
 	PlayerCharacter = Cast<ACharacter>(GetOwner());
 }
 

@@ -17,7 +17,7 @@ public:
 
 	class AGun* Gun;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapons")
+	UPROPERTY(EditAnywhere, Category = "Weapons")
 	TSubclassOf<AGun> GunBlueprint;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")

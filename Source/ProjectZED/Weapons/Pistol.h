@@ -38,5 +38,5 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float BulletSpread = 500;
 
-	void LineTrace(class AFPCharacter* PlayerCharacter);
+	void LineTrace(class AFPCharacter* PlayerCharacter, FHitResult HitResult);
 };
