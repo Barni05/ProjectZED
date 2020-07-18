@@ -21,10 +21,22 @@ public:
 
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere, Category = "Firing")
+	FVector HitLocation;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	class UStaticMeshComponent* GunMesh;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	class USceneComponent* MuzzleLocation;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float ProjectileSpeed;
+
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float BulletSpread = 500;
+
+	void LineTrace(class AFPCharacter* PlayerCharacter);
 };

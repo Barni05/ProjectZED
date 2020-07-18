@@ -33,7 +33,22 @@ void AFPCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	PlaceGun();
+	Gun = GetCurrentGun();
+	if (!Gun) { return; }
+}
 
+AGun* AFPCharacter::GetCurrentGun()
+{
+	TArray<AActor*> AttachedActors;
+	GetAttachedActors(AttachedActors);
+	for (AActor* CGun : AttachedActors)
+	{
+		if (typeid(CGun) == typeid(AGun))
+		{
+			return Cast<AGun>(CGun);
+		}
+	}
+	return nullptr;
 }
 
 // Called every frame
@@ -58,19 +73,6 @@ void AFPCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	
 }
-
-
-void AFPCharacter::OnFire(TSubclassOf<APistol> PistolBlueprint)
-{
-	auto Pistol = Cast<APistol>(Gun);
-	if (!Pistol) { return; }
-	Pistol->OnFire();
-}
-
-/*void AFPCharacter::OnFire(TSubclassOf<AGun> GunBP)
-{
-	UE_LOG(LogTemp, Warning, TEXT("DONKEY: ONFire FPCharacter.cpp"))
-}*/
 
 void AFPCharacter::SetGun(TSubclassOf<AActor> GunRef)
 {

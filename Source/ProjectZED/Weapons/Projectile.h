@@ -4,27 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Projectile.h"
-#include "Gun.generated.h"
+#include "Projectile.generated.h"
 
 UCLASS()
-class PROJECTZED_API AGun : public AActor
+class PROJECTZED_API AProjectile : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AGun();
+	AProjectile();
+
+
+	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	class UProjectileMovementComponent* ProjectileMovementComponent;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	TSubclassOf<AGun> GunBlueprint;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	class TSubclassOf<AProjectile> ProjectileBlueprint;
+	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	class UStaticMeshComponent* ProjectileMesh;
 
 public:	
 	// Called every frame
