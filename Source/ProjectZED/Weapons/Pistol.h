@@ -26,10 +26,7 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	class UStaticMeshComponent* GunMesh;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	class USceneComponent* MuzzleLocation;
+	class USkeletalMeshComponent* GunMesh;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ProjectileSpeed;

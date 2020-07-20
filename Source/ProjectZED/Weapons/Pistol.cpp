@@ -11,11 +11,9 @@
 
 APistol::APistol()
 {
-	GunMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Gun"));
-	RootComponent = GunMesh;
+	GunMesh = CreateDefaultSubobject<USkeletalMeshComponent>(FName("Gun"));
+	SetRootComponent(GunMesh);
 
-	MuzzleLocation = CreateDefaultSubobject<USceneComponent>(FName("Muzzle Location"));
-	MuzzleLocation->AttachTo(RootComponent);
 }
 
 void APistol::BeginPlay()
@@ -32,7 +30,9 @@ void APistol::OnFire()
 	if (!PlayerCharacter) { return; }
 	FHitResult ShootingHitResult;
 	LineTrace(PlayerCharacter, ShootingHitResult);
-	UGameplayStatics::ApplyPointDamage(ShootingHitResult.GetActor(), 20, ShootingHitResult.Normal, ShootingHitResult, PlayerCharacter->GetController(), PlayerCharacter, UDamageType::StaticClass());
+	if (!ShootingHitResult.GetActor()) { return; }
+	UE_LOG(LogTemp, Warning, TEXT("Actor : %s"), *ShootingHitResult.GetActor()->GetName())
+	UGameplayStatics::ApplyDamage(ShootingHitResult.GetActor(), 20, GetParentActor()->GetInstigatorController(), this, UDamageType::StaticClass());
 
 }
 
@@ -49,7 +49,6 @@ void APistol::LineTrace(AFPCharacter* PlayerCharacter, FHitResult HitResult)
 	if (!bCameraHit)
 	{
 		HitLocation = CameraEndLocation;
-		UE_LOG(LogTemp, Warning, TEXT("Hit location : %s"), *HitLocation.ToString())
 	}
 	DrawDebugLine(GetWorld(), WorldLocation, HitLocation, FColor::Blue, false, 10, 0, 10);
 }

@@ -29,11 +29,14 @@ protected:
 	class UStaticMeshComponent* Mesh1P;
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	class USpringArmComponent* CameraBoom;
+	UPROPERTY(EditDefaultsOnly, Category = "Helth")
+	float Health;
 	
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 private:
 	void PlaceGun();
 

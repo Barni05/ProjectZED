@@ -37,6 +37,14 @@ void AFPCharacter::BeginPlay()
 	if (!Gun) { return; }
 }
 
+float AFPCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	Health -= DamageAmount;
+	UE_LOG(LogTemp, Warning, TEXT("Health: %f"), Health)
+	return DamageAmount;
+}
+
 AGun* AFPCharacter::GetCurrentGun()
 {
 	TArray<AActor*> AttachedActors;
