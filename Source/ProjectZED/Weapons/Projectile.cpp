@@ -2,6 +2,7 @@
 
 
 #include "Projectile.h"
+#include "Components/SceneComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
@@ -11,6 +12,7 @@ AProjectile::AProjectile()
 	PrimaryActorTick.bCanEverTick = true;
 
 	ProjectileMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Projectile Mesh"));
+	RootComponent = ProjectileMesh;
 
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement"));
 	ProjectileMovementComponent->bAutoActivate = false;

@@ -25,15 +25,20 @@ public:
 	FVector HitLocation;
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	UPROPERTY(EditAnywhere, Category = "Components")
 	class USkeletalMeshComponent* GunMesh;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ProjectileSpeed;
 
+	UPROPERTY(BlueprintAssignable, Category = "Firing")
+	FHitResult ShootingHitResult;
+
 private:
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float BulletSpread = 500;
 
-	void LineTrace(class AFPCharacter* PlayerCharacter, FHitResult HitResult);
+	void LineTrace(class AFPCharacter* PlayerCharacter);
+
+	//Will return true if ObjectToCheck is nullptr
+	bool CheckValidity(class UObject* ObjectToCheck, FString ErrorMessage);
 };
