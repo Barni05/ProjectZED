@@ -30,7 +30,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	class USpringArmComponent* CameraBoom;
 	UPROPERTY(EditDefaultsOnly, Category = "Helth")
-	float Health;
+	float StartingHealth = 100;
+
+	float Health = StartingHealth;
 	
 	
 	// Called when the game starts or when spawned

@@ -31,14 +31,16 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ProjectileSpeed;
 
-	UPROPERTY(BlueprintAssignable, Category = "Firing")
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	FHitResult ShootingHitResult;
+
+	UPROPERTY(EditAnywhere, Category = "Firing")
+	float PistolDamage = 30;
 
 private:
 	float BulletSpread = 500;
-
 	void LineTrace(class AFPCharacter* PlayerCharacter);
 
-	//Will return true if ObjectToCheck is nullptr
-	bool CheckValidity(class UObject* ObjectToCheck, FString ErrorMessage);
+	void ApplyLineTraceDamage();
+
 };

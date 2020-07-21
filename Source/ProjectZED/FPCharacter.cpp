@@ -40,6 +40,7 @@ void AFPCharacter::BeginPlay()
 float AFPCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	FMath::Clamp<float>(DamageAmount, 0, StartingHealth);
 	Health -= DamageAmount;
 	UE_LOG(LogTemp, Warning, TEXT("Health: %f"), Health)
 	return DamageAmount;

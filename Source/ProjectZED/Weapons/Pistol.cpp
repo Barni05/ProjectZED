@@ -28,18 +28,24 @@ void APistol::OnFire()
 	auto PlayerCharacter = Cast<AFPCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());
 	if (!PlayerCharacter) { return; }
 	LineTrace(PlayerCharacter);
-	if (CheckValidity(ShootingHitResult.GetActor(), "UEC1: Hit actor not found in Pistol.cpp")) { return; }
-	UE_LOG(LogTemp, Warning, TEXT("Actor : %s"), *ShootingHitResult.GetActor()->GetName())
-
-	//Seperate to a funcion --BEGIN
-	auto ParentActor = Cast<AFPCharacter>(GetParentActor());
-	if (!ParentActor)
+	if (!ShootingHitResult.GetActor())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("UEC2: No parent actor found for %s in Pistol.cpp"), *this)
+		UE_LOG(LogTemp, Warning, TEXT("UEC1: Hit actor not found in Pistol.cpp"))
 		return;
 	}
-	UGameplayStatics::ApplyPointDamage(ShootingHitResult.GetActor(), 20, ShootingHitResult.ImpactNormal, ShootingHitResult, ParentActor->GetController(), this, UDamageType::StaticClass());
-	//Seperate to a function --END
+	ApplyLineTraceDamage();
+}
+
+void APistol::ApplyLineTraceDamage()
+{
+	auto ParentActor = Cast<AFPCharacter>(GetAttachParentActor());
+	if (!ParentActor)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UEC2: No parent actor found for %s in Pistol.cpp"), *this->GetName())
+			return;
+	}
+	UGameplayStatics::ApplyPointDamage(ShootingHitResult.GetActor(), PistolDamage, ShootingHitResult.ImpactNormal, ShootingHitResult, ParentActor->GetController(), this, UDamageType::StaticClass());
+
 }
 
 void APistol::LineTrace(AFPCharacter* PlayerCharacter)
@@ -56,15 +62,4 @@ void APistol::LineTrace(AFPCharacter* PlayerCharacter)
 	{
 		HitLocation = CameraEndLocation;
 	}
-	DrawDebugLine(GetWorld(), WorldLocation, HitLocation, FColor::Blue, false, 10, 0, 10);
-}
-
-bool APistol::CheckValidity(UObject* ObjectToCheck, FString ErrorMessage)
-{
-	if (!ObjectToCheck)
-	{
-		UE_LOG(LogTemp, Error, TEXT("%s"), *ErrorMessage)
-		return true;
-	}
-	return false;
 }
