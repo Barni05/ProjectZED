@@ -18,6 +18,9 @@ class PROJECTZED_API ANPC_AIController : public AAIController
 public:
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
+	void OnNPCDeath();
+
 protected:
 	
 };

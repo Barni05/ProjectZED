@@ -13,3 +13,9 @@ void ANPC_AIController::BeginPlay()
 {
 	Super::BeginPlay();
 }
+
+void ANPC_AIController::OnNPCDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("DED AI"))
+	GetPawn()->DetachFromControllerPendingDestroy();
+}

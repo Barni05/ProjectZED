@@ -6,7 +6,9 @@
 #include <typeinfo>
 #include "Weapons/Gun.h"
 #include "Weapons/Pistol.h"
+#include "FPPlayerController.h"
 #include "Components/StaticMeshComponent.h"
+#include "NPC_AIController.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
@@ -42,6 +44,28 @@ float AFPCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& Da
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	FMath::Clamp<float>(DamageAmount, 0, StartingHealth);
 	Health -= DamageAmount;
+	if (Health <= 0)
+	{
+		/*if (EventInstigator->IsPlayerController())
+		{
+			PlayerController->OnCharacterDeath();
+		}
+		else if (EventInstigator->IsPlayerController() == false)
+		{
+			auto AIController = Cast<ANPC_AIController>(EventInstigator);
+		}*/
+		if (GetController()->IsPlayerController())
+		{
+			auto PlayerController = Cast<AFPPlayerController>(GetController());
+			PlayerController->OnCharacterDeath();
+		}
+		else if (GetController()->IsPlayerController() == false)
+		{
+			auto AIController = Cast<ANPC_AIController>(GetController());
+			AIController->OnNPCDeath();
+		}
+
+	}
 	UE_LOG(LogTemp, Warning, TEXT("Health: %f"), Health)
 	return DamageAmount;
 }
