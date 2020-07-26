@@ -44,6 +44,8 @@ protected:
 private:
 	void PlaceGun();
 
+	void DetachControllers();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

@@ -26,6 +26,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	class TSubclassOf<AProjectile> ProjectileBlueprint;
 
+	UPROPERTY(VisibleAnywhere, Category = "Firing")
+	float CrosshairXLocation = 0.5;
+	UPROPERTY(VisibleAnywhere, Category = "Firing")
+	float CrosshairYLocation = 0.5;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

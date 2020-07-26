@@ -46,25 +46,7 @@ float AFPCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& Da
 	Health -= DamageAmount;
 	if (Health <= 0)
 	{
-		/*if (EventInstigator->IsPlayerController())
-		{
-			PlayerController->OnCharacterDeath();
-		}
-		else if (EventInstigator->IsPlayerController() == false)
-		{
-			auto AIController = Cast<ANPC_AIController>(EventInstigator);
-		}*/
-		if (GetController()->IsPlayerController())
-		{
-			auto PlayerController = Cast<AFPPlayerController>(GetController());
-			PlayerController->OnCharacterDeath();
-		}
-		else if (GetController()->IsPlayerController() == false)
-		{
-			auto AIController = Cast<ANPC_AIController>(GetController());
-			AIController->OnNPCDeath();
-		}
-
+		DetachControllers();
 	}
 	UE_LOG(LogTemp, Warning, TEXT("Health: %f"), Health)
 	return DamageAmount;
@@ -89,6 +71,21 @@ void AFPCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AFPCharacter::DetachControllers()
+{
+	if (!GetController()) { return; }
+	if (GetController()->IsPlayerController())
+	{
+		auto PlayerController = Cast<AFPPlayerController>(GetController());
+		PlayerController->OnCharacterDeath();
+	}
+	else if (GetController()->IsPlayerController() == false)
+	{
+		auto AIController = Cast<ANPC_AIController>(GetController());
+		AIController->OnNPCDeath();
+	}
 }
 
 void AFPCharacter::PlaceGun()
