@@ -56,5 +56,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Firing")
 	void SetGun(TSubclassOf<AActor> GunRef);
 
+	UFUNCTION(BlueprintCallable, Category = "Firing")
 	AGun* GetCurrentGun();
 };
