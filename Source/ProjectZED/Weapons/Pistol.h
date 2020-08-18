@@ -28,6 +28,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Components")
 	class USkeletalMeshComponent* GunMesh;
 
+
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ProjectileSpeed;
 

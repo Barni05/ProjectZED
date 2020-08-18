@@ -25,9 +25,6 @@ AFPCharacter::AFPCharacter()
 	FPCamera->SetupAttachment(CameraBoom);
 	FPCamera->SetRelativeLocation(FVector(0, 0, 30));
 
-	Mesh1P = CreateDefaultSubobject<UStaticMeshComponent>(FName("Mesh1P"));
-	Mesh1P->SetupAttachment(RootComponent);
-
 }
 
 // Called when the game starts or when spawned
@@ -56,12 +53,14 @@ AGun* AFPCharacter::GetCurrentGun()
 {
 	TArray<AActor*> AttachedActors;
 	GetAttachedActors(AttachedActors);
-	for (AActor* CGun : AttachedActors)
+	for (AActor* CurrentAttachedActor : AttachedActors)
 	{
-		if (typeid(CGun) == typeid(AGun))
+		UE_LOG(LogTemp, Warning, TEXT("La Gun: %s"), *CurrentAttachedActor->GetName())
+		if (CurrentAttachedActor->ActorHasTag(FName("Gun")))
 		{
-			return Cast<AGun>(CGun);
+			return Cast<AGun>(CurrentAttachedActor);
 		}
+		
 	}
 	return nullptr;
 }
@@ -91,10 +90,8 @@ void AFPCharacter::DetachControllers()
 void AFPCharacter::PlaceGun()
 {
 	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
-	Gun->AttachToComponent(FPCamera, FAttachmentTransformRules::SnapToTargetIncludingScale);
-	Gun->SetActorRelativeLocation(FVector(60, 30, -30));
-	Gun->SetActorRelativeRotation(FRotator(0, -90, 0));
-	Gun->SetActorRelativeScale3D(FVector(0.1, 0.1, 0.1));
+	Gun->AttachToComponent(Mesh, FAttachmentTransformRules::KeepRelativeTransform);
+	Gun->SetActorRelativeLocation(FVector(-20, 60, -40));
 }
 
 // Called to bind functionality to input

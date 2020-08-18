@@ -26,9 +26,7 @@ public:
 	class UCameraComponent* FPCamera;
 
 protected:
-
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	class UStaticMeshComponent* Mesh1P;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	class USpringArmComponent* CameraBoom;
 	UPROPERTY(EditDefaultsOnly, Category = "Helth")

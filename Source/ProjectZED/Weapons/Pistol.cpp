@@ -12,8 +12,6 @@
 
 APistol::APistol()
 {
-	GunMesh = CreateDefaultSubobject<USkeletalMeshComponent>(FName("Gun Mesh"));
-	SetRootComponent(GunMesh);
 }
 
 void APistol::BeginPlay()
@@ -21,6 +19,7 @@ void APistol::BeginPlay()
 	Super::BeginPlay();
 	EnableInput(GetWorld()->GetFirstPlayerController());
 	if (!InputComponent) { return; }
+	GunMesh = FindComponentByClass<USkeletalMeshComponent>();
 	InputComponent->BindAction(FName("Fire"), IE_Pressed, this, &APistol::OnFire);
 }
 
