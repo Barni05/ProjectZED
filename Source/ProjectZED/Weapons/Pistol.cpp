@@ -33,20 +33,20 @@ void APistol::Tick(float DeltaTime)
 	else if (Tags.Contains(FName("Player Gun")))
 	{
 		GunMesh->bOnlyOwnerSee = true;
-		SetActorRelativeLocation(FVector(70, 30, -40));
+		SetActorRelativeLocation(FVector(70, 30, -60));
 	}
 }
 
 void APistol::OnFire()
 {
-	auto PlayerCharacter = Cast<AFPCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());
-	if (!PlayerCharacter) { return; }
-	LineTrace(PlayerCharacter);
-	if (!ShootingHitResult.GetActor())
-	{
-		return;
-	}
-	ApplyLineTraceDamage();
+		auto PlayerCharacter = Cast<AFPCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());
+		if (!PlayerCharacter) { return; }
+		LineTrace(PlayerCharacter);
+		if (!ShootingHitResult.GetActor())
+		{
+			return;
+		}
+		ApplyLineTraceDamage();
 }
 
 void APistol::ApplyLineTraceDamage()
@@ -77,6 +77,7 @@ void APistol::LineTrace(AFPCharacter* PlayerCharacter)
 	//Camera Trace
 	auto ForwardVector = PlayerCharacter->FPCamera->GetForwardVector();
 	auto CameraLocation = ActorToWorld().TransformPosition(PlayerCharacter->FPCamera->GetRelativeLocation());
+	CameraLocation += FVector(10, 0, 45);
 	float NegativeSpread = BulletSpread * -1;
 	FVector SpreadOffset = FVector(FMath::FRandRange(NegativeSpread, BulletSpread), FMath::FRandRange(NegativeSpread, BulletSpread), FMath::FRandRange(NegativeSpread, BulletSpread));
 	FVector CameraEndLocation = WorldDirection * 20000 + CameraLocation + SpreadOffset;

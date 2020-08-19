@@ -91,6 +91,7 @@ void AFPCharacter::PlacePlayerGun()
 {
 	PlayerGun = GetWorld()->SpawnActor<AGun>(GunBlueprint, FVector(0, 0, 0), FRotator(0, -90, 0));
 	PlayerGun->AttachToComponent(FPCamera, FAttachmentTransformRules::KeepRelativeTransform);
+	PlayerGun->SetOwner(this);
 	PlayerGun->Tags.Add(FName("Player Gun"));
 }
 
