@@ -20,6 +20,7 @@ public:
 	void OnFire();
 
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(VisibleAnywhere, Category = "Firing")
 	FVector HitLocation;

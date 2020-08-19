@@ -23,6 +23,20 @@ void APistol::BeginPlay()
 	InputComponent->BindAction(FName("Fire"), IE_Pressed, this, &APistol::OnFire);
 }
 
+void APistol::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if (Tags.Contains(FName("Not Visible to Player")))
+	{
+		GunMesh->SetOwnerNoSee(true);
+	}
+	else if (Tags.Contains(FName("Player Gun")))
+	{
+		GunMesh->bOnlyOwnerSee = true;
+		SetActorRelativeLocation(FVector(70, 30, -40));
+	}
+}
+
 void APistol::OnFire()
 {
 	auto PlayerCharacter = Cast<AFPCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());

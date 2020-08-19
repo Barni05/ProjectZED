@@ -31,9 +31,10 @@ AFPCharacter::AFPCharacter()
 void AFPCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	PlaceGun();
-	Gun = GetCurrentGun();
-	if (!Gun) { return; }
+	PlacePlayerGun();
+	PlaceNormalGun();
+	PlayerGun = GetCurrentGun();
+	if (!PlayerGun) { return; }
 }
 
 float AFPCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
@@ -55,8 +56,7 @@ AGun* AFPCharacter::GetCurrentGun()
 	GetAttachedActors(AttachedActors);
 	for (AActor* CurrentAttachedActor : AttachedActors)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("La Gun: %s"), *CurrentAttachedActor->GetName())
-		if (CurrentAttachedActor->ActorHasTag(FName("Gun")))
+		if (CurrentAttachedActor->ActorHasTag(FName("Gun")) && !CurrentAttachedActor->ActorHasTag(FName("Not Visible to Player")))
 		{
 			return Cast<AGun>(CurrentAttachedActor);
 		}
@@ -87,11 +87,19 @@ void AFPCharacter::DetachControllers()
 	}
 }
 
-void AFPCharacter::PlaceGun()
+void AFPCharacter::PlacePlayerGun()
 {
-	Gun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
-	Gun->AttachToComponent(Mesh, FAttachmentTransformRules::KeepRelativeTransform);
-	Gun->SetActorRelativeLocation(FVector(-20, 60, -40));
+	PlayerGun = GetWorld()->SpawnActor<AGun>(GunBlueprint, FVector(0, 0, 0), FRotator(0, -90, 0));
+	PlayerGun->AttachToComponent(FPCamera, FAttachmentTransformRules::KeepRelativeTransform);
+	PlayerGun->Tags.Add(FName("Player Gun"));
+}
+
+void AFPCharacter::PlaceNormalGun()
+{
+	NormalGun = GetWorld()->SpawnActor<AGun>(GunBlueprint);
+	NormalGun->Tags.Add(FName("Not Visible to Player"));
+	NormalGun->AttachToComponent(Mesh, FAttachmentTransformRules::KeepRelativeTransform, FName("GripPoint"));
+	NormalGun->SetOwner(this);
 }
 
 // Called to bind functionality to input
