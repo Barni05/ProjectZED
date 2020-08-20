@@ -17,8 +17,6 @@ public:
 
 	APistol();
 
-	void OnFire();
-
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
@@ -26,6 +24,10 @@ public:
 	FVector HitLocation;
 
 protected:
+
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	void OnFire();
+
 	UPROPERTY(EditAnywhere, Category = "Components")
 	class USkeletalMeshComponent* GunMesh;
 
